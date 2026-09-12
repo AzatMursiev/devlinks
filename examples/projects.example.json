@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "prj-example-public",
+    "name": "Публичный проект",
+    "url": "https://example.com",
+    "status": "online",
+    "stack": ["HTML", "CSS", "JS"],
+    "year": 2026,
+    "noteRu": "Короткое описание — видно всем",
+    "noteEn": "Short description — visible to everyone",
+    "private": false
+  },
+  {
+    "_id": "prj-example-private",
+    "name": "Личный проект",
+    "url": "https://example.com/private",
+    "status": "online",
+    "stack": ["PHP", "JS"],
+    "year": 2026,
+    "noteRu": "Виден только после входа по PIN",
+    "noteEn": "Visible only after PIN login",
+    "private": true
+  }
+]

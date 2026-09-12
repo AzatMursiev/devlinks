@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#f4f5fb; --bg2:#eaecf6; --card:#ffffff; --card2:#f7f8fd;
+    --border:#e6e8f2; --border-strong:#d9dcec;
+    --text:#15161d; --muted:#646a7d; --muted2:#9b9fb2;
+    --accent:#5b5bf0; --accent2:#8b5cf6;
+    --accent-soft:color-mix(in oklab, var(--accent) 11%, transparent);
+    --shadow:0 1px 2px rgba(20,22,50,.05), 0 10px 26px rgba(20,22,50,.06);
+    --shadow-lg:0 24px 70px rgba(20,22,50,.22);
+    --star:#f5a623;
+    --free-bg:#e4f7ec; --free-fg:#15875a;
+    --paid-bg:#fdeaea; --paid-fg:#c43b3b;
+    --freemium-bg:#fff2dd; --freemium-fg:#aa6a00;
+    --card-pad:20px; --row-pad:9px 10px; --grid-min:330px;
+  }
+  [data-theme="dark"]{
+    --bg:#0b0c12; --bg2:#15161f; --card:#14151e; --card2:#1a1c27;
+    --border:#262835; --border-strong:#343748;
+    --text:#e9eaf1; --muted:#969aac; --muted2:#666a7d;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px rgba(0,0,0,.4);
+    --shadow-lg:0 30px 80px rgba(0,0,0,.6);
+    --star:#fbbf24;
+    --free-bg:rgba(21,135,90,.18); --free-fg:#4ade80;
+    --paid-bg:rgba(196,59,59,.2); --paid-fg:#fca5a5;
+    --freemium-bg:rgba(170,106,0,.2); --freemium-fg:#fbbf24;
+  }
+  [data-accent="emerald"]{--accent:#10b981;--accent2:#06b6a4;}
+  [data-accent="rose"]{--accent:#f43f5e;--accent2:#fb7185;}
+  [data-accent="amber"]{--accent:#f59e0b;--accent2:#f97316;}
+  [data-accent="sky"]{--accent:#0ea5e9;--accent2:#6366f1;}
+  [data-density="compact"]{--card-pad:14px; --row-pad:6px 9px; --grid-min:300px;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{font-family:'Manrope',system-ui,sans-serif; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; transition:background .3s ease,color .3s ease;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  input{font-family:inherit;}
+  ::placeholder{color:var(--muted2);}
+  ::-webkit-scrollbar{width:11px;height:11px;}
+  ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:999px;border:3px solid var(--bg);}
+  @keyframes ovIn{from{opacity:0}to{opacity:1}}
+  @keyframes pnIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+  .lbl-short{display:none;}
+  @media (max-width:640px){
+    .hdr-inner{padding:11px 12px!important;gap:10px!important;}
+    .hdr-controls{gap:7px!important;}
+    .btn-projects{padding:9px 11px!important;font-size:12px!important;gap:6px!important;}
+    .lbl-full{display:none!important;}
+    .lbl-short{display:inline!important;}
+    .proj-overlay{padding:24px 10px!important;}
+    .proj-head{padding:18px 16px!important;}
+    .proj-grid{grid-template-columns:1fr!important;padding:14px 16px 18px!important;}
+  }
+  @media (max-width:340px){
+    .btn-projects{padding:9px 10px!important;}
+    .lbl-short{display:none!important;}
+  }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--bg);color:var(--text);">
+
+  <header style="position:sticky;top:0;z-index:50;background:color-mix(in oklab, var(--bg) 78%, transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);">
+    <div class="hdr-inner" style="max-width:1200px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:11px;flex:none;">
+        <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px var(--accent-soft);">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4 12l5 5"></path><path d="m15 7 5 5-5 5"></path><path d="M13 4 11 20"></path></svg>
+        </div>
+        <div style="line-height:1.05;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.3px;">devlinks</div>
+          <div style="font-size:11px;color:var(--muted2);font-weight:600;">{{ t.brandSub }}</div>
+        </div>
+      </div>
+
+      <div style="position:relative;flex:1;min-width:200px;">
+        <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted2);" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input value="{{ query }}" onInput="{{ onSearch }}" placeholder="{{ t.searchPlaceholder }}" style="width:100%;padding:10px 14px 10px 38px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-weight:500;outline:none;transition:border-color .15s;" style-focus="border-color:var(--accent);" />
+      </div>
+
+      <div class="hdr-controls" style="display:flex;align-items:center;gap:9px;flex:1 1 auto;min-width:0;justify-content:flex-end;flex-wrap:nowrap;">
+        <div style="display:flex;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:3px;gap:2px;">
+          <button onClick="{{ onLangRu }}" style="border:none;cursor:pointer;padding:5px 10px;border-radius:7px;font-size:12px;font-weight:700;background:{{ ru.bg }};color:{{ ru.fg }};">RU</button>
+          <button onClick="{{ onLangEn }}" style="border:none;cursor:pointer;padding:5px 10px;border-radius:7px;font-size:12px;font-weight:700;background:{{ en.bg }};color:{{ en.fg }};">EN</button>
+        </div>
+
+        <button onClick="{{ onToggleFavOnly }}" title="{{ t.favorites }}" style="display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid {{ fav.bd }};background:{{ fav.bg }};color:{{ fav.fg }};">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="{{ fav.fill }}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.3l-5.5 3.3 1.5-6.3-4.9-4.2 6.4-.5L12 4l2.5 5.9 6.4.5-4.9 4.2 1.5 6.3z"></path></svg>
+          <span style="font-variant-numeric:tabular-nums;">{{ statFav }}</span>
+        </button>
+
+        <button onClick="{{ onToggleTheme }}" title="Theme" style="width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);">
+          <sc-if value="{{ themeIsLight }}" hint-placeholder-val="{{ true }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+          <sc-if value="{{ themeIsDark }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        </button>
+
+        <a href="admin.php" target="_blank" rel="noopener" title="{{ adm.title }}" style="width:38px;height:38px;flex:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border-radius:10px;border:1px solid {{ adm.bd }};background:{{ adm.bg }};color:{{ adm.fg }};text-decoration:none;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </a>
+
+        <button onClick="{{ onOpenProjects }}" class="btn-projects" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;padding:9px 15px;border-radius:10px;font-size:13px;font-weight:700;border:none;white-space:nowrap;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 6px 16px var(--accent-soft);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+          <span class="lbl-full">{{ t.projects }}</span><span class="lbl-short">{{ t.projectsShort }}</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1200px;margin:0 auto;padding:28px 24px 56px;">
+
+    <section style="position:relative;overflow:hidden;border-radius:22px;padding:38px 36px;margin-bottom:26px;min-height:300px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:var(--shadow);">
+      <div style="position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.13);"></div>
+      <div style="position:absolute;right:90px;bottom:-90px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.09);"></div>
+      <div style="position:relative;max-width:680px;">
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:38px;line-height:1.08;letter-spacing:-1px;color:#fff;margin:0 0 12px;text-wrap:balance;">{{ t.heroTitle }}</h1>
+        <p style="font-size:16px;line-height:1.5;color:rgba(255,255,255,.9);margin:0 0 22px;max-width:560px;">{{ t.heroSub }}</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);padding:9px 15px;border-radius:12px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:18px;color:#fff;">{{ statLinks }}</span>
+            <span style="font-size:12.5px;color:rgba(255,255,255,.85);font-weight:600;">{{ t.statLinks }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);padding:9px 15px;border-radius:12px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:18px;color:#fff;">{{ statCats }}</span>
+            <span style="font-size:12.5px;color:rgba(255,255,255,.85);font-weight:600;">{{ t.statCats }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);padding:9px 15px;border-radius:12px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff" stroke="#fff" stroke-width="1.5"><path d="M12 17.3l-5.5 3.3 1.5-6.3-4.9-4.2 6.4-.5L12 4l2.5 5.9 6.4.5-4.9 4.2 1.5 6.3z"></path></svg>
+            <span style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:18px;color:#fff;">{{ statFav }}</span>
+            <span style="font-size:12.5px;color:rgba(255,255,255,.85);font-weight:600;">{{ t.statFav }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+      <button onClick="{{ allChip.onClick }}" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid {{ allChip.bd }};background:{{ allChip.bg }};color:{{ allChip.fg }};font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;">
+        {{ t.all }}<span style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.75;">{{ allChip.count }}</span>
+      </button>
+      <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="10">
+        <button onClick="{{ chip.onClick }}" style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid {{ chip.bd }};background:{{ chip.bg }};color:{{ chip.fg }};font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;">
+          {{ chip.label }}<span style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.7;">{{ chip.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;padding:70px 20px;border:1px dashed var(--border-strong);border-radius:18px;background:var(--card);">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;margin-bottom:8px;">{{ t.emptyTitle }}</div>
+        <div style="color:var(--muted);font-size:14px;margin-bottom:18px;">{{ t.emptyHint }}</div>
+        <button onClick="{{ onClearFilters }}" style="cursor:pointer;padding:9px 18px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:700;">{{ t.clear }}</button>
+      </div>
+    </sc-if>
+
+    <div style="column-width:var(--grid-min);column-gap:20px;">
+      <sc-for list="{{ visibleCategories }}" as="cat" hint-placeholder-count="9">
+        <section style="break-inside:avoid;width:100%;margin:0 0 20px;display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:var(--card-pad);box-shadow:var(--shadow);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+            <div style="width:40px;height:40px;flex:none;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ cat.icon }}"></path></svg>
+            </div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15.5px;line-height:1.15;flex:1;">{{ cat.title }}</div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);background:var(--bg2);padding:3px 9px;border-radius:999px;font-weight:500;">{{ cat.count }}</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <sc-for list="{{ cat.links }}" as="link" hint-placeholder-count="3">
+              <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:11px;padding:var(--row-pad);border-radius:11px;text-decoration:none;color:inherit;transition:background .15s;" style-hover="background:var(--accent-soft);">
+                <span style="position:relative;width:32px;height:32px;flex:none;border-radius:9px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                  <span style="position:absolute;font-size:13px;font-weight:700;color:var(--muted2);font-family:'Space Grotesk',sans-serif;">{{ link.initial }}</span>
+                  <sc-if value="{{ link.favicon }}" hint-placeholder-val="{{ false }}"><img src="{{ link.favicon }}" data-fav="1" alt="" style="position:relative;z-index:1;width:32px;height:32px;object-fit:contain;padding:6px;" /></sc-if>
+                </span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:flex;align-items:center;gap:5px;">
+                    <span style="font-weight:600;font-size:14px;">{{ link.name }}</span>
+                  </span>
+                  <span style="display:block;font-size:12.5px;color:var(--muted);line-height:1.35;margin-top:1px;">{{ link.desc }}</span>
+                </span>
+                <sc-if value="{{ link.isFree }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--free-bg);color:var(--free-fg);">{{ link.planLabel }}</span></sc-if>
+                <sc-if value="{{ link.isPaid }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--paid-bg);color:var(--paid-fg);">{{ link.planLabel }}</span></sc-if>
+                <sc-if value="{{ link.isFreemium }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--freemium-bg);color:var(--freemium-fg);">{{ link.planLabel }}</span></sc-if>
+                <button onClick="{{ link.onStar }}" title="{{ t.favorites }}" style="flex:none;width:30px;height:30px;border-radius:8px;border:none;background:transparent;cursor:pointer;color:{{ link.starColor }};display:flex;align-items:center;justify-content:center;transition:background .15s;" style-hover="background:var(--bg2);">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="{{ link.starFill }}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.3l-5.5 3.3 1.5-6.3-4.9-4.2 6.4-.5L12 4l2.5 5.9 6.4.5-4.9 4.2 1.5 6.3z"></path></svg>
+                </button>
+              </a>
+            </sc-for>
+          </div>
+        </section>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:38px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:24px;border-top:1px solid var(--border);">
+      <div style="font-size:13px;color:var(--muted);">{{ t.footerNote }}</div>
+      <a href="mailto:hello@devlinks.dev?subject=Новая%20ссылка" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:600;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+        {{ t.suggest }}
+      </a>
+    </div>
+  </main>
+
+  <sc-if value="{{ projectsOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onCloseProjects }}" class="proj-overlay" style="position:fixed;inset:0;z-index:100;background:rgba(8,9,16,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding:48px 20px;overflow:auto;animation:ovIn .18s ease;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:760px;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;animation:pnIn .22s cubic-bezier(.2,.7,.3,1);">
+        <div class="proj-head" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px;border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;">{{ t.projectsTitle }}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:3px;">{{ t.projectsSub }}</div>
+            <sc-if value="{{ adminOn }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent);"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span>{{ t.adminBanner }}</div></sc-if>
+          </div>
+          <button onClick="{{ onCloseProjects }}" style="flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--card2);cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+        <div class="proj-grid" style="padding:18px 24px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px;">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+            <div style="border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--card2);">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div style="flex:1;min-width:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15.5px;">{{ p.name }}</div>
+                <sc-if value="{{ p.isPrivate }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);">{{ p.privateLabel }}</span></sc-if>
+                <span style="flex:none;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ p.stBg }};color:{{ p.stFg }};">
+                  <span style="width:7px;height:7px;border-radius:50%;background:{{ p.stFg }};"></span>{{ p.stLabel }}
+                </span>
+              </div>
+              <div style="font-size:13px;color:var(--muted);margin:6px 0 10px;line-height:1.4;">{{ p.note }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+                <sc-for list="{{ p.stack }}" as="tech" hint-placeholder-count="2">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;padding:3px 8px;border-radius:7px;background:var(--bg2);color:var(--muted);">{{ tech }}</span>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <a href="{{ p.url }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:13px;font-weight:700;color:var(--accent);">
+                  {{ t.open }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+                </a>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted2);">{{ p.year }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:0 24px 22px;font-size:12.5px;color:var(--muted2);">{{ t.projectsHint }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:920},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;indigo&quot;,&quot;emerald&quot;,&quot;rose&quot;,&quot;amber&quot;,&quot;sky&quot;],&quot;default&quot;:&quot;indigo&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;comfortable&quot;,&quot;compact&quot;],&quot;default&quot;:&quot;comfortable&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const ls = (k,d)=>{ try{ const v=localStorage.getItem(k); return v==null?d:v; }catch(e){ return d; } };
+    let favs=[]; try{ favs=JSON.parse(localStorage.getItem('devlinks_favs')||'[]')||[]; }catch(e){}
+    this.state = {
+      query:'',
+      activeCat:'all',
+      favOnly:false,
+      favs:favs,
+      theme: ls('devlinks_theme', (props && props.defaultTheme) || 'light'),
+      lang: ls('devlinks_lang','ru'),
+      projectsOpen:false,
+      adminOn:false,
+      catalog:null,
+      projects:null,
+    };
+  }
+
+  async componentDidMount(){
+    this.applyAttrs();
+    const m=await import('./catalog.js?v=5');
+    this._store=m;
+    this.setState({catalog:m.loadCatalog(), projects:m.loadProjects()});
+    this.loadServerProjects();
+    // Pick up edits made in the admin panel (other tab / same storage)
+    this._onStorage=(e)=>{
+      if(!this._store) return;
+      if(e.key===m.CATALOG_KEY) this.setState({catalog:m.loadCatalog()});
+      if(e.key===m.PROJECTS_KEY) this.setState({projects:m.loadProjects()});
+    };
+    window.addEventListener('storage', this._onStorage);
+    this._onErr=(e)=>{ const tg=e.target; if(tg&&tg.tagName==='IMG'&&tg.hasAttribute('data-fav')) tg.style.opacity='0'; };
+    document.addEventListener('error', this._onErr, true);
+  }
+  componentWillUnmount(){
+    if(this._onErr) document.removeEventListener('error', this._onErr, true);
+    if(this._onStorage) window.removeEventListener('storage', this._onStorage);
+  }
+  componentDidUpdate(){ this.applyAttrs(); }
+  applyAttrs(){
+    const el=document.documentElement;
+    el.setAttribute('data-theme', this.state.theme);
+    el.setAttribute('data-accent', (this.props&&this.props.accent)||'indigo');
+    el.setAttribute('data-density', (this.props&&this.props.density)||'comfortable');
+    el.setAttribute('lang', this.state.lang);
+  }
+
+  async loadServerProjects(){
+    // The server is the source of truth. Private projects are returned ONLY when
+    // the admin PIN session is active; anonymous visitors get the public list.
+    try{
+      const r=await fetch('projects.php',{credentials:'same-origin',cache:'no-store'});
+      if(!r.ok) return;
+      // The endpoint reports whether the admin PIN session is active.
+      this.setState({adminOn:r.headers.get('X-DL-Auth')==='1'});
+      const j=await r.json();
+      if(Array.isArray(j)&&j.length) this.setState({projects:j});
+    }catch(e){}
+  }
+  slug(s){ return s.toLowerCase().replace(/[^a-z0-9а-яё]+/gi,'-').replace(/(^-|-$)/g,''); }
+  host(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } }
+
+  toggleFav(id){
+    this.setState(s=>{
+      const has=s.favs.includes(id);
+      const favs=has? s.favs.filter(x=>x!==id) : [...s.favs,id];
+      try{ localStorage.setItem('devlinks_favs', JSON.stringify(favs)); }catch(e){}
+      return {favs};
+    });
+  }
+  toggleTheme(){
+    const t=this.state.theme==='light'?'dark':'light';
+    try{ localStorage.setItem('devlinks_theme',t); }catch(e){}
+    this.setState({theme:t});
+  }
+  setLang(l){ try{ localStorage.setItem('devlinks_lang',l); }catch(e){} this.setState({lang:l}); }
+
+  data(){
+    if(this.state.catalog) return this.state.catalog;
+    return [
+      {id:'domains', ru:'Домены', en:'Domains', icon:'M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10zM2 12h20M12 2c2.6 2.8 2.6 17.2 0 20M12 2c-2.6 2.8-2.6 17.2 0 20', links:[
+        {name:'Reg.ru', url:'https://reg.ru', ru:'Регистратор доменов №1 в России', en:'Russia\u2019s #1 domain registrar', plan:'paid'},
+        {name:'2domains', url:'https://2domains.ru', ru:'Дешёвый регистратор, партнёр reg.ru', en:'Cheap registrar, reg.ru partner', plan:'paid'},
+        {name:'Webnames', url:'https://www.webnames.ru', ru:'Ещё один надёжный регистратор доменов', en:'Another reliable domain registrar', plan:'paid'},
+      ]},
+      {id:'hosting', ru:'Хостинги', en:'Hosting', icon:'M4 4h16v6H4zM4 14h16v6H4zM7 7h.01M7 17h.01', links:[
+        {name:'Макхост', url:'https://mchost.ru', ru:'Один из лидеров среди хостингов', en:'A leading hosting provider', plan:'paid'},
+        {name:'Джино', url:'https://jino.ru', ru:'Хостинг-конструктор, платите за нужное', en:'Hosting builder, pay only for what you use', plan:'paid'},
+        {name:'Timeweb', url:'https://timeweb.com', ru:'Популярный хостинг и облачные серверы', en:'Popular hosting & cloud servers', plan:'paid'},
+        {name:'Vercel', url:'https://vercel.com', ru:'Хостинг для фронтенда и Next.js', en:'Front-end & Next.js hosting', plan:'freemium'},
+      ]},
+      {id:'design', ru:'Дизайн', en:'Design', icon:'M12 2.7C12 2.7 5 9 5 14a7 7 0 0 0 14 0c0-5-7-11.3-7-11.3z', links:[
+        {name:'Figma', url:'https://figma.com', ru:'Онлайн-редактор интерфейсов', en:'Online interface design tool', plan:'freemium'},
+        {name:'Photopea', url:'https://photopea.com', ru:'Бесплатный аналог Photoshop в браузере', en:'Free Photoshop alternative in the browser', plan:'free'},
+        {name:'Photoshop', url:'https://www.adobe.com/products/photoshop.html', ru:'Стандарт индустрии графических редакторов', en:'The industry-standard image editor', plan:'paid'},
+        {name:'Sketch', url:'https://www.sketch.com', ru:'Векторный редактор для macOS', en:'Vector design tool for macOS', plan:'paid'},
+        {name:'Adobe XD', url:'https://www.adobe.com/products/xd.html', ru:'Платный конкурент Figma', en:'Paid Figma competitor', plan:'paid'},
+        {name:'Zeplin', url:'https://zeplin.io', ru:'Передача макетов разработчикам', en:'Design handoff for developers', plan:'freemium'},
+        {name:'Moqups', url:'https://moqups.com', ru:'Онлайн-сервис для мокапов и схем', en:'Online mockups & wireframes', plan:'freemium'},
+      ]},
+      {id:'fonts', ru:'Шрифты', en:'Fonts', icon:'M4 6V4h16v2M12 4v16M8 20h8', links:[
+        {name:'Google Fonts', url:'https://fonts.google.com', ru:'Бесплатные веб-шрифты от Google', en:'Free web fonts by Google', plan:'free'},
+        {name:'Adobe Fonts', url:'https://fonts.adobe.com', ru:'Веб-шрифты от Adobe', en:'Web fonts by Adobe', plan:'paid'},
+        {name:'AnyConv', url:'https://anyconv.com/ru/konverter-shriftov/', ru:'Онлайн-конвертер веб-шрифтов', en:'Online web font converter', plan:'free'},
+      ]},
+      {id:'editors', ru:'Редакторы кода', en:'Code editors', icon:'M8 6l-6 6 6 6M16 6l6 6-6 6', links:[
+        {name:'VS Code', url:'https://code.visualstudio.com', ru:'Мощный бесплатный редактор от Microsoft', en:'Powerful free editor by Microsoft', plan:'free'},
+        {name:'Cursor', url:'https://cursor.com', ru:'ИИ-редактор кода на базе VS Code', en:'AI-powered code editor', plan:'freemium'},
+        {name:'Sublime Text', url:'https://www.sublimetext.com', ru:'Быстрый и лёгкий редактор кода', en:'Fast, lightweight code editor', plan:'freemium'},
+        {name:'WebStorm', url:'https://www.jetbrains.com/webstorm/', ru:'IDE для JavaScript от JetBrains', en:'JavaScript IDE by JetBrains', plan:'paid'},
+        {name:'Notepad++', url:'https://notepad-plus-plus.org', ru:'Лёгкий текстовый редактор', en:'Lightweight text editor', plan:'free'},
+      ]},
+      {id:'online', ru:'Онлайн-редакторы', en:'Online editors', icon:'M2 4h20v12H2zM7 20h10M9 9l-2 2 2 2M15 9l2 2-2 2', links:[
+        {name:'CodePen', url:'https://codepen.io', ru:'Песочница для фронтенда', en:'Front-end playground', plan:'freemium'},
+        {name:'CodeSandbox', url:'https://codesandbox.io', ru:'Онлайн-IDE для веб-приложений', en:'Online IDE for web apps', plan:'freemium'},
+        {name:'StackBlitz', url:'https://stackblitz.com', ru:'Мгновенные дев-среды в браузере', en:'Instant dev environments', plan:'freemium'},
+        {name:'JSFiddle', url:'https://jsfiddle.net', ru:'Простой онлайн-редактор кода', en:'Simple online code playground', plan:'free'},
+        {name:'Replit', url:'https://replit.com', ru:'Облачная среда разработки', en:'Cloud IDE', plan:'freemium'},
+      ]},
+      {id:'icons', ru:'Иконки', en:'Icons', icon:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z', links:[
+        {name:'Lucide', url:'https://lucide.dev', ru:'Открытый набор аккуратных иконок', en:'Open-source icon set', plan:'free'},
+        {name:'Heroicons', url:'https://heroicons.com', ru:'Иконки от создателей Tailwind', en:'Icons by the Tailwind team', plan:'free'},
+        {name:'Flaticon', url:'https://www.flaticon.com', ru:'Огромная база векторных иконок', en:'Huge vector icon library', plan:'freemium'},
+        {name:'Iconfinder', url:'https://www.iconfinder.com', ru:'Высококачественные иконки', en:'High-quality icons', plan:'freemium'},
+        {name:'Favicon.io', url:'https://favicon.io', ru:'Онлайн-генератор фавиконок', en:'Online favicon generator', plan:'free'},
+      ]},
+      {id:'graphics', ru:'Графика и фото', en:'Graphics & photos', icon:'M3 3h18v18H3zM3 16l5-5 4 4 3-3 6 6M8.5 8.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z', links:[
+        {name:'Unsplash', url:'https://unsplash.com', ru:'Бесплатные фото высокого качества', en:'Free high-res photos', plan:'free'},
+        {name:'Pexels', url:'https://www.pexels.com', ru:'Бесплатные фото и видео', en:'Free stock photos & videos', plan:'free'},
+        {name:'Squoosh', url:'https://squoosh.app', ru:'Онлайн-сжатие изображений', en:'Online image compression', plan:'free'},
+        {name:'Shutterstock', url:'https://www.shutterstock.com', ru:'Стоковые изображения и фото', en:'Stock images & photos', plan:'paid'},
+        {name:'Depositphotos', url:'https://depositphotos.com', ru:'Фотобанк с премиум-коллекцией', en:'Premium stock photo bank', plan:'paid'},
+        {name:'iStock', url:'https://www.istockphoto.com', ru:'Стоковые фото и векторы', en:'Stock photos & vectors', plan:'paid'},
+      ]},
+      {id:'preproc', ru:'Препроцессоры', en:'Preprocessors', icon:'M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5', links:[
+        {name:'Sass / SCSS', url:'https://sass-lang.com', ru:'Самый зрелый CSS-препроцессор', en:'The most mature CSS preprocessor', plan:'free'},
+        {name:'Less', url:'https://lesscss.org', ru:'CSS-препроцессор', en:'CSS preprocessor', plan:'free'},
+        {name:'PostCSS', url:'https://postcss.org', ru:'Трансформация CSS плагинами', en:'Transform CSS with plugins', plan:'free'},
+        {name:'Pug', url:'https://pugjs.org', ru:'HTML-препроцессор и шаблонизатор', en:'HTML template engine', plan:'free'},
+        {name:'Haml', url:'https://haml.info', ru:'Лаконичный HTML-препроцессор', en:'Concise HTML preprocessor', plan:'free'},
+      ]},
+      {id:'frameworks', ru:'Фреймворки', en:'Frameworks', icon:'M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v9', links:[
+        {name:'Tailwind CSS', url:'https://tailwindcss.com', ru:'Utility-first CSS-фреймворк', en:'Utility-first CSS framework', plan:'free'},
+        {name:'Bootstrap', url:'https://getbootstrap.com', ru:'HTML, CSS и JS фреймворк', en:'HTML, CSS & JS framework', plan:'free'},
+        {name:'React', url:'https://react.dev', ru:'Библиотека для интерфейсов от Meta', en:'UI library by Meta', plan:'free'},
+        {name:'Vue', url:'https://vuejs.org', ru:'Прогрессивный JS-фреймворк', en:'The progressive JS framework', plan:'free'},
+      ]},
+      {id:'imggen', ru:'Заглушки изображений', en:'Image placeholders', icon:'M3 3h13v9M3 3v15h15M3 14l4-4 3 3M19 3v6M16 6h6', links:[
+        {name:'Lorem Picsum', url:'https://picsum.photos', ru:'Случайные изображения-заглушки', en:'Random placeholder images', plan:'free'},
+        {name:'Placeholder.com', url:'https://placeholder.com', ru:'Генератор заглушек изображений', en:'Image placeholder generator', plan:'free'},
+        {name:'UI Avatars', url:'https://ui-avatars.com', ru:'Аватары-заглушки по инициалам', en:'Initials-based avatar placeholders', plan:'free'},
+      ]},
+      {id:'responsive', ru:'Адаптивность', en:'Responsive testing', icon:'M2 5h14v9H2zM6 18h6M14 9h7v11h-7zM17 17h.01', links:[
+        {name:'Responsively', url:'https://responsively.app', ru:'Просмотр сайта на многих экранах', en:'Preview site across many screens', plan:'free'},
+        {name:'Am I Responsive', url:'https://ui.dev/amiresponsive', ru:'Быстрый предпросмотр адаптивности', en:'Quick responsive preview', plan:'free'},
+      ]},
+      {id:'guides', ru:'Справочники', en:'References', icon:'M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4zM4 18a2 2 0 0 1 2-2h12', links:[
+        {name:'MDN Web Docs', url:'https://developer.mozilla.org', ru:'Документация по веб-технологиям', en:'The web platform documentation', plan:'free'},
+        {name:'Can I use', url:'https://caniuse.com', ru:'Поддержка фич браузерами', en:'Browser feature support tables', plan:'free'},
+        {name:'БЭМ', url:'https://ru.bem.info', ru:'Методология веб-разработки', en:'BEM web development methodology', plan:'free'},
+        {name:'htmlreference.io', url:'https://htmlreference.io', ru:'Бесплатный справочник по HTML', en:'Free HTML reference', plan:'free'},
+        {name:'HTML5 Boilerplate', url:'https://html5boilerplate.com', ru:'Популярный стартовый шаблон', en:'Popular front-end template', plan:'free'},
+      ]},
+      {id:'builders', ru:'Конструкторы сайтов', en:'Website builders', icon:'M3 4h18v16H3zM3 9h18M9 9v11', links:[
+        {name:'Tilda', url:'https://tilda.cc', ru:'Блочный конструктор сайтов', en:'Block-based website builder', plan:'freemium'},
+        {name:'Webflow', url:'https://webflow.com', ru:'Визуальный конструктор сайтов', en:'Visual website builder', plan:'freemium'},
+        {name:'Framer', url:'https://framer.com', ru:'Сайты и прототипы без кода', en:'No-code sites & prototypes', plan:'freemium'},
+      ]},
+      {id:'validation', ru:'Валидация кода', en:'Code validation', icon:'M22 11.5V12a10 10 0 1 1-5.9-9.1M22 4 12 14.5l-3-3', links:[
+        {name:'W3C Markup Validator', url:'https://validator.w3.org', ru:'Валидация HTML-кода', en:'HTML markup validation', plan:'free'},
+        {name:'W3C CSS Validator', url:'https://jigsaw.w3.org/css-validator/', ru:'Валидация CSS-кода', en:'CSS validation', plan:'free'},
+      ]},
+      {id:'learn', ru:'Курсы и статьи', en:'Courses & articles', icon:'M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1 3 3 6 3s6-2 6-3v-5', links:[
+        {name:'JavaScript.info', url:'https://javascript.info', ru:'Современный учебник JavaScript', en:'The modern JavaScript tutorial', plan:'free'},
+        {name:'web.dev', url:'https://web.dev', ru:'Гайды по современному вебу от Google', en:'Modern web guides by Google', plan:'free'},
+        {name:'CSS Grid Guide', url:'https://css-tricks.com/snippets/css/complete-guide-grid/', ru:'Полное руководство по CSS Grid', en:'Complete guide to CSS Grid', plan:'free'},
+        {name:'Flexbox Guide', url:'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', ru:'Полное руководство по Flexbox', en:'Complete guide to Flexbox', plan:'free'},
+        {name:'Git How To', url:'https://githowto.com', ru:'Интерактивный тур по основам Git', en:'Interactive guided Git tour', plan:'free'},
+      ]},
+    ];
+  }
+
+  projectsData(){
+    if(this.state.projects) return this.state.projects;
+    return [
+      {name:'Корпоративный сайт', url:'https://example.com', status:'online', stack:['HTML','CSS','JS'], year:2024, noteRu:'Промо-сайт компании с формой заявки', noteEn:'Company promo site with a lead form'},
+      {name:'Интернет-магазин', url:'https://shop.example.com', status:'online', stack:['React','Node.js'], year:2025, noteRu:'Каталог, корзина и оплата', noteEn:'Catalog, cart and checkout'},
+      {name:'Лендинг услуг', url:'https://promo.example.com', status:'online', stack:['Tilda'], year:2023, noteRu:'Одностраничник для рекламы', noteEn:'One-page promo landing'},
+      {name:'Блог о путешествиях', url:'https://travel.example.com', status:'maintenance', stack:['WordPress'], year:2022, noteRu:'Личный блог, идёт обновление', noteEn:'Personal blog, update in progress'},
+    ];
+  }
+
+  T(){
+    const ru=this.state.lang==='ru';
+    return ru ? {
+      brandSub:'полезные ссылки', searchPlaceholder:'Поиск по ссылкам…', all:'Все',
+      favorites:'Избранное', projects:'Мои проекты', suggest:'Предложить ссылку', admin:'Админ-панель',
+      heroTitle:'Полезные ссылки для веб-разработчика',
+      heroSub:'Программы, сервисы и сайты, которые ускорят вашу работу — собрано в одном месте.',
+      statLinks:'ссылок', statCats:'категорий', statFav:'в избранном',
+      emptyTitle:'Ничего не найдено', emptyHint:'Попробуйте изменить запрос или сбросить фильтры.', clear:'Сбросить фильтры',
+      footerNote:'Подборка для веб-разработчиков · 2019 — 2026',
+      projectsTitle:'Мои проекты', projectsSub:'Сайты, которые уже работают в интернете',
+      projectsHint:'Все проекты размещены на azatmursiev.com',
+      open:'Открыть', online:'Онлайн', maintenance:'На доработке', privateLabel:'Личный',
+      projectsShort:'Проекты', adminOnTitle:'Вы вошли как админ — открыть панель',
+      adminBanner:'Вы вошли как админ — видны личные проекты',
+      free:'Бесплатно', paid:'Платно', freemium:'Условно-бесплатный',
+    } : {
+      brandSub:'useful links', searchPlaceholder:'Search links…', all:'All',
+      favorites:'Favorites', projects:'My projects', suggest:'Suggest a link', admin:'Admin panel',
+      heroTitle:'Useful links for web developers',
+      heroSub:'Apps, services and sites that speed up your work — all gathered in one place.',
+      statLinks:'links', statCats:'categories', statFav:'favorited',
+      emptyTitle:'Nothing found', emptyHint:'Try a different query or reset the filters.', clear:'Reset filters',
+      footerNote:'A collection for web developers · 2019 — 2026',
+      projectsTitle:'My projects', projectsSub:'Sites already live on the internet',
+      projectsHint:'All projects are hosted on azatmursiev.com',
+      open:'Open', online:'Online', maintenance:'Maintenance', privateLabel:'Private',
+      projectsShort:'Projects', adminOnTitle:'Signed in as admin — open the panel',
+      adminBanner:'Signed in as admin — private projects are visible',
+      free:'Free', paid:'Paid', freemium:'Freemium',
+    };
+  }
+
+  renderVals(){
+    const t=this.T();
+    const ru=this.state.lang==='ru';
+    const cats=this.data();
+    const favSet=new Set(this.state.favs);
+    const q=this.state.query.trim().toLowerCase();
+
+    let totalLinks=0;
+    cats.forEach(c=>totalLinks+=c.links.length);
+
+    const planMeta={
+      free:{label:t.free, isFree:true, isPaid:false, isFreemium:false},
+      paid:{label:t.paid, isFree:false, isPaid:true, isFreemium:false},
+      freemium:{label:t.freemium, isFree:false, isPaid:false, isFreemium:true},
+    };
+
+    const decorate=(cat,l)=>{
+      const id=cat.id+':'+this.slug(l.name);
+      const isFav=favSet.has(id);
+      const pm=planMeta[l.plan]||planMeta.free;
+      return {
+        name:l.name, url:l.url, desc:ru?l.ru:l.en,
+        initial:l.name.replace(/[^A-Za-zА-Яа-я0-9]/,'').charAt(0).toUpperCase()||l.name.charAt(0).toUpperCase(),
+        favicon:'https://www.google.com/s/favicons?sz=64&domain='+this.host(l.url),
+        planLabel:pm.label, isFree:pm.isFree, isPaid:pm.isPaid, isFreemium:pm.isFreemium,
+        isFav, starColor:isFav?'var(--star)':'var(--muted2)', starFill:isFav?'var(--star)':'none',
+        onStar:(e)=>{ if(e){e.preventDefault();e.stopPropagation();} this.toggleFav(id); },
+      };
+    };
+
+    const match=(l)=> !q || (l.name+' '+l.ru+' '+l.en).toLowerCase().includes(q);
+
+    const visibleCategories=[];
+    cats.forEach(cat=>{
+      if(this.state.activeCat!=='all' && cat.id!==this.state.activeCat) return;
+      let links=cat.links.filter(match);
+      if(this.state.favOnly) links=links.filter(l=>favSet.has(cat.id+':'+this.slug(l.name)));
+      if(!links.length) return;
+      visibleCategories.push({
+        id:cat.id, title:ru?cat.ru:cat.en, icon:cat.icon, count:links.length,
+        links:links.map(l=>decorate(cat,l)),
+      });
+    });
+
+    const chipStyle=(active)=>active
+      ? {bg:'var(--accent)', fg:'#fff', bd:'var(--accent)'}
+      : {bg:'var(--card)', fg:'var(--text)', bd:'var(--border)'};
+
+    const chips=cats.map(cat=>{
+      const cs=chipStyle(this.state.activeCat===cat.id);
+      return {label:ru?cat.ru:cat.en, count:cat.links.length, ...cs,
+        onClick:()=>this.setState({activeCat:this.state.activeCat===cat.id?'all':cat.id})};
+    });
+    const allCs=chipStyle(this.state.activeCat==='all');
+    const allChip={label:t.all, count:totalLinks, ...allCs, onClick:()=>this.setState({activeCat:'all'})};
+
+    const langPill=(on)=>on?{bg:'var(--accent)',fg:'#fff'}:{bg:'transparent',fg:'var(--muted)'};
+    const favActive=this.state.favOnly;
+    const adminOn=!!this.state.adminOn;
+    const adm=adminOn
+      ? {bg:'var(--accent)', fg:'#fff', bd:'var(--accent)', title:t.adminOnTitle}
+      : {bg:'var(--card)', fg:'var(--text)', bd:'var(--border)', title:t.admin};
+
+    const projects=this.projectsData().map(p=>{
+      const on=p.status==='online';
+      return {name:p.name, url:p.url, stack:p.stack, year:String(p.year),
+        note:ru?p.noteRu:p.noteEn,
+        stLabel:on?t.online:t.maintenance,
+        stBg:on?'var(--free-bg)':'var(--freemium-bg)',
+        stFg:on?'var(--free-fg)':'var(--freemium-fg)',
+        isPrivate:!!p.private, privateLabel:t.privateLabel};
+    });
+
+    return {
+      t, query:this.state.query,
+      onSearch:(e)=>this.setState({query:e.target.value}),
+      statLinks:totalLinks, statCats:cats.length, statFav:this.state.favs.length,
+      visibleCategories, chips, allChip, isEmpty:visibleCategories.length===0,
+      onClearFilters:()=>this.setState({query:'',activeCat:'all',favOnly:false}),
+      themeIsDark:this.state.theme==='dark', themeIsLight:this.state.theme==='light',
+      onToggleTheme:()=>this.toggleTheme(),
+      onLangRu:()=>this.setLang('ru'), onLangEn:()=>this.setLang('en'),
+      ru:langPill(ru), en:langPill(!ru),
+      onToggleFavOnly:()=>this.setState({favOnly:!this.state.favOnly}),
+      fav:{bg:favActive?'var(--accent-soft)':'var(--card)', fg:favActive?'var(--accent)':'var(--text)', bd:favActive?'var(--accent)':'var(--border)', fill:favActive?'currentColor':'none'},
+      onOpenProjects:()=>this.setState({projectsOpen:true}),
+      onCloseProjects:()=>this.setState({projectsOpen:false}),
+      stop:(e)=>{ if(e) e.stopPropagation(); },
+      projectsOpen:this.state.projectsOpen, projects, adminOn, adm,
+    };
+  }
+}
+</script>
+</body>
+</html>
